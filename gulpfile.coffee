@@ -7,5 +7,6 @@ dir = requireDir('./gulp', {recurse: true})
 
 gulp.task 'default', ->
   runSequence(
-    ['jade', 'stylus', 'babel']
+    ['jade', 'stylus', 'babel'],
+    ['watch', 'browserSync']
   )
