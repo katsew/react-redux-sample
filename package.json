@@ -14,7 +14,6 @@
   "license": "MIT",
   "devDependencies": {
     "babelify": "^7.2.0",
-    "bower": "^1.6.6",
     "browserify": "^12.0.1",
     "stylus": "^0.52.4"
   }
