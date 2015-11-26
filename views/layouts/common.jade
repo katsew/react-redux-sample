@@ -1,0 +1,21 @@
+doctype html
+html(lang='ja')
+  head
+    block meta
+      meta(charset='utf-8')
+      meta(name='viewport', content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no')
+    block title
+      title Not yet be named.
+    block style
+      link(rel='stylesheet', href='/assets/css/core.css')
+  body
+    block notifications
+      include ../includes/notification.jade
+    block header
+      include ../includes/header.jade
+    block content
+    
+    block footer
+      include ../includes/footer.jade
+    block script
+      script(type='text/javascript', src='/assets/js/core.js')
