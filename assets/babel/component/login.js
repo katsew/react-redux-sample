@@ -35,15 +35,15 @@ const Login = React.createClass({
   },
   render() {
     return (
-      <div>
-        <h2>ログイン</h2>
-        <form onSubmit={this.onSubmit}>
-          <label>メールアドレス</label>
-          <input type="email" onChange={this.onChangeEmail} value={this.state.mail} />
-          <label>パスワード</label>
-          <input type="password" onChange={this.onChangePassword} />
-          <input type="submit" value="送信" />
-        </form>
+      <div className="section">
+        <div className="content">
+          <h2>ログイン</h2>
+          <form onSubmit={this.onSubmit}>
+            <p><label>メールアドレス<input type="email" onChange={this.onChangeEmail} value={this.state.mail} /></label></p>
+            <p><label>パスワード<input type="password" onChange={this.onChangePassword} /></label></p>
+            <input type="submit" value="送信" />
+          </form>
+        </div>
       </div>
     );
   }

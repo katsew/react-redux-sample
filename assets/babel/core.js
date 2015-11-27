@@ -9,21 +9,16 @@ const Link = require('react-router').Link;
 const appContainer = document.getElementById('app');
 
 // React Components
-const NewRegistration = require('./components/NewRegistration.js');
-const Login = require('./components/Login.js');
+const Header = require('./component/header.js');
+const NewRegistration = require('./component/registration.js');
+const Login = require('./component/login.js');
 
 const App = React.createClass({
   render() {
     return (
-      <div>
-        <h2>トップページ</h2>
-        <ul>
-          <li><Link to="/registar">新規登録</Link></li>
-          <li><Link to="/login">ログイン</Link></li>
-        </ul>
-        <div>
-          {this.props.children}
-        </div>
+      <div className="app-inner">
+        <Header />
+        {this.props.children}
       </div>
     );
   }
