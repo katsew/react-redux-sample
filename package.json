@@ -37,11 +37,13 @@
     "vinyl-source-stream": "^1.1.0"
   },
   "dependencies": {
-    "history": "^1.13.1",
+    "history": "https://registry.npmjs.org/history/-/history-1.13.1.tgz",
     "react": "^0.14.3",
     "react-dom": "^0.14.3",
+    "react-redux": "^4.0.0",
     "react-router": "^1.0.0",
     "redux": "^3.0.4",
+    "redux-router": "^0.1.0",
     "superagent": "https://registry.npmjs.org/superagent/-/superagent-1.4.0.tgz"
   }
 }
