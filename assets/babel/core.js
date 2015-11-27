@@ -6,14 +6,12 @@ const ReactDom = require('react-dom');
 const render = ReactDom.render;
 
 // React Router
-const Link = require('react-router').Link;
+const Router = require('react-router').Router;
 const Route = require('react-router').Route;
 
-// Redux Router
-const reduxReactRouter = require('redux-router').reduxReactRouter;
-const routerStateReducer = require('redux-router').routerStateReducer;
-const ReduxRouter = require('redux-router').ReduxRouter;
-const pushState = require('redux-router').pushState;
+// Redux Simple Router
+const syncReduxAndRouter = require('redux-simple-router').syncReduxAndRouter
+const routeReducer = require('redux-simple-router').routeReducer
 
 // Redux
 const compose = require('redux').compose;
@@ -30,7 +28,7 @@ const LogMonitor = require('redux-devtools/lib/react').LogMonitor;
 const Provider = require('react-redux').Provider;
 const connect = require('react-redux').connect;
 
-const createHistory = require('history').createHistory;
+const createHashHistory = require('history').createHashHistory;
 const appContainer = document.getElementById('app');
 
 // React Components
@@ -48,12 +46,6 @@ const App = React.createClass({
     );
   }
 });
-connect(
-  (state) => {
-    return {q: this.state.router.location.query.q};
-  },
-  {pushState}
-)(App);
 
 const routes = (
   <Route path="/" component={App}>
@@ -63,23 +55,23 @@ const routes = (
 );
 
 const reducer = combineReducers({
-  router: routerStateReducer
+  routing: routeReducer
 });
 
-const store = compose(
-  reduxReactRouter({
-    routes,
-    createHistory
-  }),
+const finalCreateStore = compose(
   devTools()
-)(createStore)(reducer);
+)(createStore);
+
+const store = finalCreateStore(reducer);
+const history = createHashHistory();
+syncReduxAndRouter(history, store);
 
 render((
   <div>
     <Provider store={store}>
-      <ReduxRouter>
+      <Router history={history}>
         {routes}
-      </ReduxRouter>
+      </Router>
     </Provider>
     <DebugPanel top left bottom>
       <DevTools store={store} monitor={LogMonitor} />
