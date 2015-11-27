@@ -6,7 +6,7 @@ const ReactDom = require('react-dom');
 const render = ReactDom.render;
 
 // React Router
-// const Router = require('react-router').Router;
+const Link = require('react-router').Link;
 const Route = require('react-router').Route;
 
 // Redux Router
@@ -22,9 +22,9 @@ const createStore = require('redux').createStore;
 
 // Redux Devtools
 const devTools = require('redux-devtools').devTools;
-const DevTools = require('redux-devtools/lib/react').DevTools
-const DebugPanel = require('redux-devtools/lib/react').DebugPanel
-const LogMonitor = require('redux-devtools/lib/react').LogMonitor
+const DevTools = require('redux-devtools/lib/react').DevTools;
+const DebugPanel = require('redux-devtools/lib/react').DebugPanel;
+const LogMonitor = require('redux-devtools/lib/react').LogMonitor;
 
 // React Redux
 const Provider = require('react-redux').Provider;
@@ -49,7 +49,9 @@ const App = React.createClass({
   }
 });
 connect(
-  state => ({ q: state.router.location.query.q}),
+  (state) => {
+    return {q: this.state.router.location.query.q};
+  },
   {pushState}
 )(App);
 
@@ -65,7 +67,10 @@ const reducer = combineReducers({
 });
 
 const store = compose(
-  reduxReactRouter({ createHistory }),
+  reduxReactRouter({
+    routes,
+    createHistory
+  }),
   devTools()
 )(createStore)(reducer);
 
@@ -76,7 +81,7 @@ render((
         {routes}
       </ReduxRouter>
     </Provider>
-    <DebugPanel top right bottom>
+    <DebugPanel top left bottom>
       <DevTools store={store} monitor={LogMonitor} />
     </DebugPanel>
   </div>

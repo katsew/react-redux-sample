@@ -10,8 +10,8 @@ const Header = React.createClass({
             <Link to="/">site logo</Link>
           </h1>
           <ul className="navi l-right clearfix">
-            <li><Link to="/registar">新規登録</Link></li>
-            <li><Link to="/login">ログイン</Link></li>
+            <li><Link to="registar">新規登録</Link></li>
+            <li><Link to="login">ログイン</Link></li>
           </ul>
         </div>
       </div>

@@ -26,6 +26,7 @@ const Login = React.createClass({
     console.log('--- submit email ---');
     console.log(e);
     console.log(this.state);
+    e.nativeEvent.preventDefault();
     let data = this.state;
     ApiClient.login(data, (err, res) => {
       console.log('--- response comes here ---');
