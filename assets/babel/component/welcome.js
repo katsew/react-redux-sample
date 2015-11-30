@@ -16,5 +16,4 @@ const Welcome = React.createClass({
   }
 });
 
-
 module.exports = Welcome;
