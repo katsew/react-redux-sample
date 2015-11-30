@@ -1,37 +1,42 @@
 const React = require('react');
+const ReactDOM = require('react-dom');
+const find = ReactDOM.findDOMNode;
 const ApiClient = require('./../service/api-client.js');
+const actionCreator = require('../action/auth/');
+const connect = require('react-redux').connect;
+
+const mapStateToProps = (state) => {
+  return {
+    auth: state.auth
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    successLogin: (auth) => {
+      dispatch(actionCreator.successLogin());
+    },
+    failureLogin: (err) => {
+      dispatch(actionCreator.failureLogin());
+    }
+  }
+};
 
 const Login = React.createClass({
-  getInitialState() {
-    return {
-      mail: "",
-      password: ""
-    };
-  },
-  onChangeEmail(e) {
-    console.log('--- email changed ---');
-    console.log(e);
-    let st = this.state;
-    let next = Object.assign({}, st, { mail: e.target.value });
-    this.setState(next);
-  },
-  onChangePassword(e) {
-    console.log('--- password changed ---');
-    console.log(e);
-    let st = this.state;
-    let next = Object.assign({}, st, { password: e.target.value });
-    this.setState(next);
-  },
   onSubmit(e) {
-    console.log('--- submit email ---');
-    console.log(e);
-    console.log(this.state);
-    e.nativeEvent.preventDefault();
-    let data = this.state;
+    e.preventDefault();
+    let mail = find(this.refs.login_mail).value;
+    let password = find(this.refs.login_password).value;
+    let data = {
+      mail: mail,
+      password: password
+    };
     ApiClient.login(data, (err, res) => {
-      console.log('--- response comes here ---');
-      console.log(err);
-      console.log(res);
+      if (err != null) {
+        console.log(err);
+        return this.props.failureLogin();
+      }
+      this.props.successLogin();
     });
   },
   render() {
@@ -40,8 +45,8 @@ const Login = React.createClass({
         <div className="content">
           <h2>ログイン</h2>
           <form onSubmit={this.onSubmit}>
-            <p><label>メールアドレス<input type="email" onChange={this.onChangeEmail} value={this.state.mail} /></label></p>
-            <p><label>パスワード<input type="password" onChange={this.onChangePassword} /></label></p>
+            <p><label>メールアドレス<input type="email" ref="login_mail" /></label></p>
+            <p><label>パスワード<input type="password" ref="login_password" /></label></p>
             <input type="submit" value="送信" />
           </form>
         </div>
@@ -50,4 +55,8 @@ const Login = React.createClass({
   }
 });
 
-module.exports = Login;
+
+module.exports = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Login);

@@ -1,17 +1,10 @@
 const React = require('react');
 const Header = require('./header.js');
 const connect = require('react-redux').connect;
-const bindActionCreators = require('redux').bindActionCreators;
-const actionCreator = require('../action/login/action-creator.js');
 const pushState = require('redux-router').pushState;
 
-let App = React.createClass({
-  componentDidMount() {
-  },
+const App = React.createClass({
   render() {
-    console.log('--- app is mounted ---');
-    console.log(this.displayName);
-    console.log(this.props.dispatch);
     return (
       <div className="app-inner">
         <Header />
@@ -21,7 +14,19 @@ let App = React.createClass({
   }
 });
 
+const mapStateToProps = (state) => {
+  return {
+    q: state.router.location.query.q
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    pushState: pushState
+  };
+};
+
 module.exports = connect(
-  state => ({ q: state.router.location.query.q }),
-  { pushState }
+  mapStateToProps,
+  mapDispatchToProps
 )(App);

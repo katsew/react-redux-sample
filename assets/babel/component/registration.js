@@ -1,25 +1,11 @@
 const React = require('react');
 const ApiClient = require('./../service/api-client.js');
 
-const NewRegistration = React.createClass({
-  getInitialState() {
-    return {
-      mail: ""
-    };
-  },
-  onChangeEmail(e) {
-    console.log('--- email changed ---');
-    console.log(e);
-    let st = this.state;
-    let next = Object.assign({}, st, { mail: e.target.value });
-    this.setState(next);
-  },
+const Registration = React.createClass({
   onSubmit(e) {
     console.log('--- submit email ---');
-    console.log(e);
-    console.log(this.state);
-    e.nativeEvent.preventDefault();
-    let data = this.state;
+    e.preventDefault();
+    let data = null;
     ApiClient.sendRegistrationEmail(data, (err, res) => {
       console.log('--- response comes here ---');
       console.log(err);
@@ -32,7 +18,7 @@ const NewRegistration = React.createClass({
         <div className="content">
           <h2>新規登録</h2>
           <form onSubmit={this.onSubmit}>
-            <p><label>メールアドレス<input type="email" onChange={this.onChangeEmail} value={this.state.mail} /></label></p>
+            <p><label>メールアドレス<input type="email" onChange={this.onChangeEmail} /></label></p>
             <input type="submit" value="送信" />
           </form>
         </div>
@@ -41,4 +27,4 @@ const NewRegistration = React.createClass({
   }
 });
 
-module.exports = NewRegistration;
+module.exports = Registration;

@@ -13,8 +13,7 @@ const DebugComponent = require('./util/debug.js').DebugComponent;
 const Router = require('./router.js');
 
 // initial configuration
-const createHistory = require('history/lib/createHashHistory');
-const history = createHistory();
+const history = require('./util/history.js');
 const store = require('./store/single-source-of-truth.js');
 
 // render component

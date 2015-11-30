@@ -30,6 +30,26 @@ class ApiClient {
         callback(err, parse(res.text));
       });
   }
+  logout(callback) {
+    httpClient
+      .get(`${API_ENDPOINT}/logout`)
+      .send()
+      .end((err, res) => {
+        console.error(err);
+        console.log(res);
+        callback(err, parse(res.text));
+      });
+  }
+  checkAuth(callback) {
+    httpClient
+      .get(`${API_ENDPOINT}/check_auth`)
+      .send()
+      .end((err, res) => {
+        console.error(err);
+        console.log(res);
+        callback(err, parse(res.text));
+      });
+  }
 };
 
 module.exports = new ApiClient();
