@@ -10,7 +10,10 @@ gulp.task 'dev', ->
     ['jade', 'stylus', 'babel'],
     ['watch', 'browserSync']
   )
-  
+
+gulp.task 'watch:all', ->
+  runSequence(['watch', 'browserSync'])
+
 gulp.task 'release', ->
   runSequence(
     ['jade', 'stylus', 'babel']
