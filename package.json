@@ -39,12 +39,16 @@
   },
   "dependencies": {
     "history": "https://registry.npmjs.org/history/-/history-1.13.1.tgz",
+    "invariant": "^2.2.0",
+    "key-mirror": "^1.0.1",
+    "qs": "^4.0.0",
     "react": "^0.14.3",
     "react-dom": "^0.14.3",
     "react-redux": "^4.0.0",
     "react-router": "^1.0.0",
     "redux": "^3.0.4",
-    "redux-simple-router": "0.0.10",
-    "superagent": "https://registry.npmjs.org/superagent/-/superagent-1.4.0.tgz"
+    "redux-router": "^1.0.0-beta5",
+    "superagent": "https://registry.npmjs.org/superagent/-/superagent-1.4.0.tgz",
+    "warning": "^2.1.0"
   }
 }
