@@ -1,3 +1,2 @@
-const routeReducer = require('redux-simple-router').routeReducer;
-
-module.exports = routeReducer;
+const routerStateReducer = require('redux-router').routerStateReducer;
+module.exports = routerStateReducer;

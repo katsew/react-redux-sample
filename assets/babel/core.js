@@ -7,18 +7,15 @@ const render = ReactDom.render;
 
 // React Redux
 const Provider = require('react-redux').Provider;
-const connect = require('react-redux').connect;
 
 // require components
 const DebugComponent = require('./util/debug.js').DebugComponent;
 const Router = require('./router.js');
 
 // initial configuration
-const createHashHistory = require('history').createHashHistory;
-const history = createHashHistory();
+const createHistory = require('history/lib/createHashHistory');
+const history = createHistory();
 const store = require('./store/single-source-of-truth.js');
-const syncReduxAndRouter = require('redux-simple-router').syncReduxAndRouter;
-syncReduxAndRouter(history, store);
 
 // render component
 render((

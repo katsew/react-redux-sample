@@ -2,6 +2,9 @@ const React = require('react');
 const Link = require('react-router').Link;
 
 const Header = React.createClass({
+  componentDidMount() {
+    console.log('--- header is mounted ---');
+  },
   render() {
     return (
       <div className="header clearfix">
