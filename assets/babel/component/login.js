@@ -4,6 +4,7 @@ const find = ReactDOM.findDOMNode;
 const ApiClient = require('./../service/api-client.js');
 const actionCreator = require('../action/auth/');
 const connect = require('react-redux').connect;
+const pushState = require('redux-router').pushState;
 
 const mapStateToProps = (state) => {
   return {
@@ -18,7 +19,8 @@ const mapDispatchToProps = (dispatch) => {
     },
     failureLogin: (err) => {
       dispatch(actionCreator.failureLogin());
-    }
+    },
+    pushState: pushState
   }
 };
 
@@ -37,6 +39,7 @@ const Login = React.createClass({
         return this.props.failureLogin();
       }
       this.props.successLogin();
+      this.props.history.pushState(null, "/welcome");
     });
   },
   render() {

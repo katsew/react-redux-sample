@@ -3,6 +3,8 @@ const Link = require('react-router').Link;
 const connect = require('react-redux').connect;
 const ApiClient = require('./../service/api-client.js');
 const actionCreator = require('../action/auth/');
+const pushState = require('redux-router').pushState;
+const history = require('../util/history.js');
 
 const mapStateToProps = (state) => {
   return {
@@ -17,7 +19,8 @@ const mapDispatchToProps = (dispatch) => {
     },
     failureLogout: (err) => {
       dispatch(actionCreator.failureLogout());
-    }
+    },
+    pushState: pushState
   }
 };
 
@@ -30,10 +33,10 @@ const Header = React.createClass({
         return this.props.failureLogout();
       }
       this.props.successLogout();
+      history.pushState(null, "/");
     });
   },
   render() {
-    console.log(this.props);
     return (
       <div className="header clearfix">
         <div className="header-inner">
