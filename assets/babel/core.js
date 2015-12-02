@@ -16,10 +16,37 @@ const Router = require('./router.js');
 const history = require('./util/history.js');
 const store = require('./store/single-source-of-truth.js');
 
-render((
-  <div>
-    <Provider store={store}>
-      <Router history={history} />
-    </Provider>
-  </div>
-), document.getElementById('app'));
+// render component
+const ApiClient = require('./service/api-client.js');
+const actionCreator = require('./action/auth/');
+const constants = require('./constant');
+
+let accessToken = window.localStorage.getItem(constants.TOKEN_KEY);
+if (accessToken != null) {
+  ApiClient.checkToken(accessToken, (err, res) => {
+    if (err) {
+      store.dispatch(actionCreator.failureLogin());
+      history.pushState(null, "/login");
+    } else {
+      store.dispatch(actionCreator.successLogin());
+      history.pushState(null, "/welcome");
+    }
+    console.log('--- initial state ---');
+    console.log(store.getState());
+    render((
+      <div>
+        <Provider store={store}>
+          <Router history={history} />
+        </Provider>
+      </div>
+    ), document.getElementById('app'));
+  });
+} else {
+  render((
+    <div>
+      <Provider store={store}>
+        <Router history={history} />
+      </Provider>
+    </div>
+  ), document.getElementById('app'));
+}

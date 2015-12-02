@@ -6,6 +6,7 @@ const actionCreator = require('../action/auth/');
 const connect = require('react-redux').connect;
 const Login = require('./login.js');
 const pushState = require('redux-router').pushState;
+const constants = require('../constant/');
 
 const Auth = (Component) => {
   const Authenticated = React.createClass({
@@ -16,16 +17,18 @@ const Auth = (Component) => {
       this._authenticate()
     },
     _authenticate() {
-      console.log('--- authentication is required ---');
+      console.log('--- check whether auth is required ---');
       if (!this.props.auth.isAuth) {
-        ApiClient.checkAuth((err, res) => {
+        console.log('--- auth is required! ---');
+        ApiClient.checkToken(window.localStorage.getItem(constants.TOKEN_KEY), (err, res) => {
           if (err != null) {
             console.log(err);
-            return this.props.history.pushState(null, '/login');
+            return this.props.pushState(null, '/login');
           }
           this.props.pushState(null, '/welcome');
         });
       }
+      console.log('--- user already login, goto welcome ---');
       this.props.pushState(null, '/welcome');
     },
     render() {
@@ -33,7 +36,7 @@ const Auth = (Component) => {
         <div>
           { this.props.auth.isAuth ?
             <Component {...this.props} /> :
-            null
+            <Login {...this.props} />
           }
         </div>
       );
