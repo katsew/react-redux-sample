@@ -10,9 +10,9 @@ const API_ENDPOINT = `http://${HOST}:${PORT}/api/${API_VERSION}`;
 class ApiClient {
   constructor() {
   }
-  sendRegistrationEmail(data, callback) {
+  registar(data, callback) {
     httpClient
-      .post(`${API_ENDPOINT}/m/c`)
+      .post(`${API_ENDPOINT}/registar`)
       .send(data)
       .end((err, res) => {
         console.error(err);
