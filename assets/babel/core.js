@@ -16,26 +16,10 @@ const Router = require('./router.js');
 const history = require('./util/history.js');
 const store = require('./store/single-source-of-truth.js');
 
-// render component
-const ApiClient = require('./service/api-client.js');
-const actionCreator = require('./action/auth/');
-ApiClient.checkAuth((err, res) => {
-  if (err) {
-    store.dispatch(actionCreator.failureLogin());
-    history.pushState(null, "/login");
-  } else {
-    store.dispatch(actionCreator.successLogin());
-    history.pushState(null, "/welcome");
-  }
-  console.log('--- initial state ---');
-  console.log(store.getState());
-  render((
-    <div>
-      <Provider store={store}>
-        <Router history={history} />
-      </Provider>
-      {/* <DebugComponent store={store} /> */}
-    </div>
-  ), document.getElementById('app'));
-
-});
+render((
+  <div>
+    <Provider store={store}>
+      <Router history={history} />
+    </Provider>
+  </div>
+), document.getElementById('app'));

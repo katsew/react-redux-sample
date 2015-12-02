@@ -40,10 +40,10 @@ class ApiClient {
         callback(err, parse(res.text));
       });
   }
-  checkAuth(callback) {
+  checkToken(token, callback) {
     httpClient
-      .get(`${API_ENDPOINT}/check_auth`)
-      .send()
+      .get(`${API_ENDPOINT}/check_token`)
+      .set('x-access-token', token)
       .end((err, res) => {
         console.error(err);
         console.log(res);
