@@ -27,10 +27,10 @@ const mapDispatchToProps = (dispatch) => {
 const Login = React.createClass({
   onSubmit(e) {
     e.preventDefault();
-    let mail = find(this.refs.login_mail).value;
+    let name = find(this.refs.login_name).value;
     let password = find(this.refs.login_password).value;
     let data = {
-      mail: mail,
+      name: name,
       password: password
     };
     ApiClient.login(data, (err, res) => {
@@ -38,7 +38,8 @@ const Login = React.createClass({
         console.log(err);
         return this.props.failureLogin();
       }
-      this.props.successLogin();
+      console.log(res.data);
+      this.props.successLogin(res.data);
       this.props.history.pushState(null, "/welcome");
     });
   },
@@ -48,7 +49,7 @@ const Login = React.createClass({
         <div className="content">
           <h2>ログイン</h2>
           <form onSubmit={this.onSubmit}>
-            <p><label>メールアドレス<input type="email" ref="login_mail" /></label></p>
+            <p><label>ユーザー名<input type="text" ref="login_name" /></label></p>
             <p><label>パスワード<input type="password" ref="login_password" /></label></p>
             <input type="submit" value="送信" />
           </form>
