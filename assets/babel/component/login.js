@@ -5,7 +5,7 @@ const ApiClient = require('./../service/api-client.js');
 const actionCreator = require('../action/auth/');
 const connect = require('react-redux').connect;
 const pushState = require('redux-router').pushState;
-
+const storage = window.localStorage;
 const mapStateToProps = (state) => {
   return {
     auth: state.auth
@@ -14,10 +14,10 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    successLogin: (auth) => {
+    successLogin: () => {
       dispatch(actionCreator.successLogin());
     },
-    failureLogin: (err) => {
+    failureLogin: () => {
       dispatch(actionCreator.failureLogin());
     },
     pushState: pushState
@@ -38,8 +38,8 @@ const Login = React.createClass({
         console.log(err);
         return this.props.failureLogin();
       }
-      console.log(res.data);
-      this.props.successLogin(res.data);
+      storage.setItem("token", res.token);
+      this.props.successLogin();
       this.props.history.pushState(null, "/welcome");
     });
   },
