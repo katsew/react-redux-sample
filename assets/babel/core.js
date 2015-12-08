@@ -22,9 +22,10 @@ const actionCreator = require('./action/auth/');
 const constants = require('./constant');
 
 let accessToken = window.localStorage.getItem(constants.TOKEN_KEY);
-if (accessToken != null) {
+if (accessToken != null && accessToken !== "" && accessToken !== "null") {
   ApiClient.checkToken(accessToken, (err, res) => {
-    if (err) {
+    console.log('--- initial token check ---');
+    if (res.status > 200) {
       store.dispatch(actionCreator.failureLogin());
       history.pushState(null, "/login");
     } else {

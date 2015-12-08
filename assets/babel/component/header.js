@@ -5,6 +5,7 @@ const ApiClient = require('./../service/api-client.js');
 const actionCreator = require('../action/auth/');
 const pushState = require('redux-router').pushState;
 const history = require('../util/history.js');
+const constants = require('../constant/');
 
 const mapStateToProps = (state) => {
   return {
@@ -28,11 +29,14 @@ const Header = React.createClass({
   logout(e) {
     e.preventDefault();
     ApiClient.logout((err, res) => {
-      if (err != null) {
+      if (res.status > 200) {
         console.log(err);
         return this.props.failureLogout();
       }
       this.props.successLogout();
+      window.localStorage.setItem(constants.TOKEN_KEY, "");
+      window.localStorage.removeItem(constants.TOKEN_KEY);
+      console.log(window.localStorage.getItem(constants.TOKEN_KEY));
       history.pushState(null, "/");
     });
   },

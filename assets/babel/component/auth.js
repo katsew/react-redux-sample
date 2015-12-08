@@ -14,19 +14,20 @@ const Auth = (Component) => {
       this._authenticate();
     },
     componentWillReceiveProps (nextProps) {
-      this._authenticate()
+      this._authenticate();
     },
     _authenticate() {
       console.log('--- check whether auth is required ---');
       if (!this.props.auth.isAuth) {
         console.log('--- auth is required! ---');
         ApiClient.checkToken(window.localStorage.getItem(constants.TOKEN_KEY), (err, res) => {
-          if (err != null) {
+          if (res.status > 200) {
             console.log(err);
             return this.props.pushState(null, '/login');
           }
           this.props.pushState(null, '/welcome');
         });
+        return ;
       }
       console.log('--- user already login, goto welcome ---');
       this.props.pushState(null, '/welcome');

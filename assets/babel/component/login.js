@@ -29,12 +29,17 @@ const Login = React.createClass({
     e.preventDefault();
     let name = find(this.refs.login_name).value;
     let password = find(this.refs.login_password).value;
+    let log = {
+      game_id: "sample",
+      type: "LOGIN"
+    };
     let data = {
       name: name,
-      password: password
+      password: password,
+      log: log
     };
     ApiClient.login(data, (err, res) => {
-      if (err != null) {
+      if (res.status > 200) {
         console.log(err);
         return this.props.failureLogin();
       }
