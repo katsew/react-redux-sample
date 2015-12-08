@@ -18,12 +18,24 @@ class KpiClient {
   login(user_id, token) {
     let data = toSerializeJSON({
       game_id: this.gameId,
-      user_id: user_id,
-      type: 'LOGIN'
+      user_id: user_id
     });
     console.log(data);
     httpClient
       .get(`${API_ENDPOINT}/login`)
+      .set('x-access-token', token)
+      .set('x-log-client', data)
+      .end();
+  }
+  registar(user_id, token) {
+    let data = toSerializeJSON({
+      game_id: this.gameId,
+      user_id: user_id
+    });
+    console.log('--- registration kpi ---');
+    console.log(data);
+    httpClient
+      .get(`${API_ENDPOINT}/registar`)
       .set('x-access-token', token)
       .set('x-log-client', data)
       .end();

@@ -45,7 +45,7 @@ const Login = React.createClass({
         return this.props.failureLogin();
       }
       storage.setItem("token", res.token);
-      KpiClient.login(res.data.id);
+      KpiClient.login(res.data.id, res.token);
       this.props.successLogin();
       this.props.history.pushState(null, "/welcome");
     });

@@ -2,7 +2,11 @@ const React = require('react');
 const ApiClient = require('./../service/api-client.js');
 const ReactDOM = require('react-dom');
 const find = ReactDOM.findDOMNode;
-
+const KpiClient = require('./../service/kpi-client.js')('sample');
+const actionCreator = require('../action/auth/');
+const connect = require('react-redux').connect;
+const pushState = require('redux-router').pushState;
+const storage = window.localStorage;
 const Registration = React.createClass({
   onSubmit(e) {
     console.log('--- submit email ---');
@@ -18,9 +22,16 @@ const Registration = React.createClass({
       confirm: confirm
     };
     ApiClient.registar(data, (err, res) => {
-      console.log('--- response comes here ---');
-      console.log(err);
-      console.log(res);
+      if (res.status > 200) {
+        console.log('--- registar failed ---');
+        return this.props.failureLogin();
+      }
+      console.log('--- kpi registar and login ---');
+      KpiClient.registar(res.data._id, res.token);
+      storage.setItem("token", res.token);
+      KpiClient.login(res.data.id, res.token);
+      this.props.successLogin();
+      this.props.history.pushState(null, "/welcome");
     });
   },
   render() {
@@ -40,5 +51,25 @@ const Registration = React.createClass({
     );
   }
 });
+const mapStateToProps = (state) => {
+  return {
+    auth: state.auth
+  };
+};
 
-module.exports = Registration;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    successLogin: () => {
+      dispatch(actionCreator.successLogin());
+    },
+    failureLogin: () => {
+      dispatch(actionCreator.failureLogin());
+    },
+    pushState: pushState
+  }
+};
+
+module.exports = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Registration);
