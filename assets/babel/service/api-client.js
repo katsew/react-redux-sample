@@ -3,10 +3,10 @@
 const httpClient = require("superagent");
 const API_VERSION = "v1";
 const HOST = "localhost";
-const PORT = "3000";
+const PORT = "3003";
 const parse = JSON.parse;
 const API_ENDPOINT = `http://${HOST}:${PORT}/api/${API_VERSION}`;
-
+let instance;
 class ApiClient {
   constructor() {
   }
@@ -62,4 +62,11 @@ class ApiClient {
   }
 };
 
-module.exports = new ApiClient();
+module.exports = function () {
+  if (instance != null) {
+    console.log('--- singleton return instance ---');
+    return instance;
+  }
+  instance = new ApiClient();
+  return instance;
+}()

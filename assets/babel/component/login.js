@@ -2,6 +2,7 @@ const React = require('react');
 const ReactDOM = require('react-dom');
 const find = ReactDOM.findDOMNode;
 const ApiClient = require('./../service/api-client.js');
+const KpiClient = require('./../service/kpi-client.js')('127.0.0.1', '3333', 'sample');
 const actionCreator = require('../action/auth/');
 const connect = require('react-redux').connect;
 const pushState = require('redux-router').pushState;
@@ -44,6 +45,7 @@ const Login = React.createClass({
         return this.props.failureLogin();
       }
       storage.setItem("token", res.token);
+      KpiClient.login(res.data.id);
       this.props.successLogin();
       this.props.history.pushState(null, "/welcome");
     });
