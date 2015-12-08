@@ -1,18 +1,32 @@
-const SocketClient = require('./socket-client.js');
-const toJSON = JSON.stringify;
+const serialize = escape;
+const stringify = JSON.stringify;
+const toSerializeJSON = function(data){
+  let json = data;
+  json = stringify(json);
+  json = serialize(json);
+  return json;
+};
+const httpClient = require("superagent");
+const HOST = "localhost";
+const PORT = "3333";
+const API_ENDPOINT = `http://${HOST}:${PORT}/log`;
 let instance = null;
-class KpiClient extends SocketClient {
-  constructor(host, port, gameId) {
-    super(host, port);
+class KpiClient {
+  constructor(gameId) {
     this.gameId = gameId;
   }
-  login(user_id) {
-    let data = toJSON({
+  login(user_id, token) {
+    let data = toSerializeJSON({
       game_id: this.gameId,
       user_id: user_id,
       type: 'LOGIN'
     });
-    this.socket.emit('log:login', data);
+    console.log(data);
+    httpClient
+      .get(`${API_ENDPOINT}/login`)
+      .set('x-access-token', token)
+      .set('x-log-client', data)
+      .end();
   }
 };
 
