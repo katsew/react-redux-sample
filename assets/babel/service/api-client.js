@@ -60,6 +60,27 @@ class ApiClient {
         callback(null, parse(res.text));
       });
   }
+  getGameList(token, callback) {
+    httpClient
+      .get(`${API_ENDPOINT}/kpi/game_list`)
+      .set('x-access-token', token)
+      .end((err, res) => {
+        if (err != null)
+          return callback(err);
+        callback(null, parse(res.text));
+      });
+  }
+  getTypeList(name, token, callback) {
+    httpClient
+      .get(`${API_ENDPOINT}/kpi/type_list`)
+      .set('x-access-token', token)
+      .set('x-access-name', name)
+      .end((err, res) => {
+        if (err != null)
+          return callback(err);
+        callback(null, parse(res.text));
+      });
+  }
 };
 
 module.exports = function () {
