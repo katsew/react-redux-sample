@@ -15,9 +15,9 @@ class ApiClient {
       .post(`${API_ENDPOINT}/user/create`)
       .send(data)
       .end((err, res) => {
-        console.log(err);
-        console.log(res);
-        callback(err, parse(res.text));
+        if (err != null)
+          return callback(err);
+        callback(null, parse(res.text));
       });
   }
   login(data, callback) {
@@ -25,9 +25,9 @@ class ApiClient {
       .post(`${API_ENDPOINT}/auth/login`)
       .send(data)
       .end((err, res) => {
-        console.log(err);
-        console.log(res);
-        callback(err, parse(res.text));
+        if (err != null)
+          return callback(err);
+        callback(null, parse(res.text));
       });
   }
   logout(callback) {
@@ -35,9 +35,9 @@ class ApiClient {
       .get(`${API_ENDPOINT}/auth/logout`)
       .send()
       .end((err, res) => {
-        console.log(err);
-        console.log(res);
-        callback(err, parse(res.text));
+        if (err != null)
+          return callback(err);
+        callback(null, parse(res.text));
       });
   }
   checkToken(token, callback) {
@@ -45,9 +45,9 @@ class ApiClient {
       .get(`${API_ENDPOINT}/auth/check_token`)
       .set('x-access-token', token)
       .end((err, res) => {
-        console.log(err);
-        console.log(res);
-        callback(err, parse(res.text));
+        if (err != null)
+          return callback(err);
+        callback(null, parse(res.text));
       });
   }
   getOwner(token, callback) {
@@ -55,18 +55,15 @@ class ApiClient {
       .get(`${API_ENDPOINT}/user/owner`)
       .set('x-access-token', token)
       .end((err, res) => {
-        console.log(err);
-        console.log(res);
-        callback(err, parse(res.text));
+        if (err != null)
+          return callback(err);
+        callback(null, parse(res.text));
       });
   }
 };
 
 module.exports = function () {
-  if (instance != null) {
-    console.log('--- singleton return instance ---');
-    return instance;
-  }
+  if (instance != null) return instance;
   instance = new ApiClient();
   return instance;
 }()

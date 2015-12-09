@@ -21,7 +21,7 @@ const Auth = (Component) => {
       if (!this.props.auth.isAuth) {
         console.log('--- auth is required! ---');
         ApiClient.checkToken(window.localStorage.getItem(constants.TOKEN_KEY), (err, res) => {
-          if (res.status > 200) {
+          if (err != null) {
             console.log(err);
             return this.props.pushState(null, '/login');
           }

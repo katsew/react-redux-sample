@@ -22,7 +22,7 @@ const Registration = React.createClass({
       confirm: confirm
     };
     ApiClient.registar(data, (err, res) => {
-      if (res.status > 200) {
+      if (err != null) {
         console.log('--- registar failed ---');
         return this.props.failureLogin();
       }

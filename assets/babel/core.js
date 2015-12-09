@@ -26,7 +26,7 @@ if (accessToken != null && accessToken !== "" && accessToken !== "null") {
   ApiClient.checkToken(accessToken, (err, res) => {
     console.log(res);
     console.log('--- initial token check ---');
-    if (res.status > 200) {
+    if (err != null) {
       store.dispatch(actionCreator.failureLogin());
       history.pushState(null, "/login");
     } else {

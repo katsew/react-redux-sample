@@ -43,10 +43,7 @@ class KpiClient {
 };
 
 module.exports = function(host, port, gameId) {
-  if (instance != null) {
-    console.log('--- prevent instantiate, this is a singleton class ---');
-    return instance;
-  }
+  if (instance != null) return instance;
   instance = new KpiClient(host, port, gameId);
   return instance;
 };

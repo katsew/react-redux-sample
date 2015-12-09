@@ -29,7 +29,7 @@ const Header = React.createClass({
   logout(e) {
     e.preventDefault();
     ApiClient.logout((err, res) => {
-      if (res.status > 200) {
+      if (err != null) {
         console.log(err);
         return this.props.failureLogout();
       }

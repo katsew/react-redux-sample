@@ -40,7 +40,7 @@ const Login = React.createClass({
       log: log
     };
     ApiClient.login(data, (err, res) => {
-      if (res.status > 200) {
+      if (err != null) {
         console.log(err);
         return this.props.failureLogin();
       }
