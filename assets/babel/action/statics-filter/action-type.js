@@ -6,5 +6,6 @@ module.exports = Object.freeze(keyMirror({
   SHOW_THIS_MONTH: null,
   SHOW_BETWEEN: null,
   ORDER_BY_DESC: null,
-  ORDER_BY_ASC: null
+  ORDER_BY_ASC: null,
+  FORCE_RESET: null
 }));

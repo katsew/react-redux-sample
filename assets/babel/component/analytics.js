@@ -22,6 +22,7 @@ const mapDispatchToProps = (dispatch) => {
     },
     failureFetch: () => {
       dispatch(actionCreator.failureFetch());
+      dispatch(staticsFilter.forceReset());
     },
     showThisMonth: (payload) => {
       dispatch(staticsFilter.showThisMonth(payload));
@@ -61,6 +62,32 @@ const Analytics = React.createClass({
       this.props.successFetch(payload, res.data);
     });
   },
+  componentDidMount() {
+    console.log('--- component did mount ---');
+  },
+  componentWillReceiveProps(nextProps) {
+    console.log('--- component will receive props ---');
+    console.log(nextProps);
+  },
+  shouldComponentUpdate(nextProps, nextState) {
+    console.log('--- should component update ? ---');
+    console.log(this.props, this.state);
+    console.log(nextProps, nextState);
+    return _.isEqual(this.props.statics, nextProps.statics, (a, b) => {
+      return a !== b;
+    });
+  },
+  componentWillUpdate(nextProps, nextState) {
+    console.log('--- component will update ! ---');
+    console.log(nextProps, nextState);
+  },
+  componentDidUpdate(prevProps, prevState) {
+    console.log('--- component did update ---');
+    console.log(prevProps, prevState);
+  },
+  compoenntWillUnmount() {
+    console.log('--- component will unmount ---');
+  },
   showRecent() {
     let payload = this.getValidAnalytics();
     if (_.isArray(payload))
@@ -72,12 +99,15 @@ const Analytics = React.createClass({
       this.props.showThisMonth(payload);
   },
   getValidAnalytics() {
+    console.log('--- get valid analytics ---');
     let analytics = this.props.analytics;
     let gameId = this.props.params.gameId;
     let typeId = this.props.params.typeId;
     console.log(analytics, gameId, typeId);
 
-    return (gameId && typeId && (Object.keys(analytics).length > 0 && analytics[gameId] && analytics[gameId][typeId])) || false;
+    if ( gameId && typeId && (Object.keys(analytics).length > 0 && analytics[gameId] && analytics[gameId][typeId]) ) {
+      return analytics[gameId][typeId];
+    }
   },
   orderByAsc() {
     this.props.orderBy('ASC');
@@ -87,44 +117,18 @@ const Analytics = React.createClass({
   },
   render() {
     console.log('--- render component ---');
-
-    let data = {};
     let chartX = [];
     if (_.isArray(this.getValidAnalytics())) {
       console.log('--- is valid statics ---');
-      if (data != null) {
-        // let last30Day = moment().add(-30, 'days').format('YYYY-MM-DD');
-        //
-        // chartX = _.filter(data, (item) => {
-        //     let created = moment(item.created).format('YYYY-MM-DD');
-        //     return moment(item.created).isAfter(last30Day);
-        // });
-        // chartX = _.sortBy(chartX, (item, idx, arr) => {
-        //   let time = moment(item.created).valueOf();
-        //   return Math.min(time);
-        // });
-        // let chartY = _.countBy(chartX, (item, idx, arr) => {
-        //   console.log(item, idx, arr);
-        //   return moment(item.created).format('YYYY-MM-DD');
-        // });
-        // console.log(chartY['2015-11-12']);
-        // chartX = _.map(this.props.statics, (item, idx, arr) => {
-        //     return (
-        //       <div key={idx}>
-        //         {item._id} : {moment(item.created).format('YYYY年M月D日(ddd)')}
-        //       </div>
-        //     );
-        //   });
-      }
-    }
-    console.log(this.props.statics);
-    chartX = _.map(this.props.statics, (item, idx, arr) => {
+      console.log(this.props.statics);
+      chartX = _.map(this.props.statics, (item, idx, arr) => {
         return (
           <div key={idx}>
             {item._id} : {moment(item.created).format('YYYY年M月D日(ddd)')}
           </div>
         );
       });
+    }
     return (
       <div>
         {this.props.params.typeId}

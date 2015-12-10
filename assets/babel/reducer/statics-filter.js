@@ -65,6 +65,10 @@ const staticFilter = (state = initialState, action) => {
         return Math.min(-time);
       });
     }
+    case actionType.FORCE_RESET: {
+      return initialState;
+    }
+    break;
     default:
       return state;
   }

@@ -36,5 +36,10 @@ module.exports = Object.freeze({
     return {
       type: actionType.ORDER_BY_ASC
     };
+  },
+  forceReset: () => {
+    return {
+      type: actionType.FORCE_RESET
+    };
   }
 });
