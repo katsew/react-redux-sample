@@ -3,10 +3,10 @@ const initialState = [];
 
 const gameList = (state = initialState, action) => {
   switch(action.type) {
-    case actionType.SUCCESS_FETCH:
+    case actionType.SUCCESS_FETCH_GAME:
       return state.concat(action.payload)
       break;
-    case actionType.FAILURE_FETCH:
+    case actionType.FAILURE_FETCH_GAME:
     default:
       return state;
   }

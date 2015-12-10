@@ -10,7 +10,6 @@ const mapStateToProps = (state) => {
 
 const GameList = React.createClass({
   render() {
-    console.log(this.props.gameList);
     let games = this.props.gameList.map((item) => {
       return (
         <div key={item.name} className="game-list-item">

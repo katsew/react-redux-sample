@@ -10,7 +10,8 @@ const routes = (
     <Route path="registar" component={components.Registration} />
     <Route path="login" component={components.Login} />
     <Route path="welcome" component={AuthenticatedComponent(components.Welcome)} />
-    <Route path="dashboard/:gameId" component={components.Dashboard} />
+    <Route path="dashboard/:gameId" component={components.Dashboard}  />
+    <Route path="dashboard/:gameId/:typeId" component={components.Analytics} />
   </Route>
 );
 

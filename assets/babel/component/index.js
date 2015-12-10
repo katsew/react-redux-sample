@@ -3,5 +3,6 @@ module.exports = {
   Login: require('./login.js'),
   Registration: require('./registration.js'),
   Welcome: require('./welcome.js'),
-  Dashboard: require('./dashboard/dashboard.js')
+  Dashboard: require('./dashboard.js'),
+  Analytics: require('./analytics.js')
 };

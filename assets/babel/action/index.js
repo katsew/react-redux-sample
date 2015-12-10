@@ -1,3 +1,5 @@
 module.exports = {
-  auth: require('./auth/')
+  auth: require('./auth'),
+  gameList: require('./gamelist'),
+  typeList: require('./typelist')
 };
