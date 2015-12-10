@@ -6,7 +6,6 @@ const constants = require('../constant/');
 const actionCreator = require('../action/typelist');
 
 const mapStateToProps = (state) => {
-  console.log(state);
   return {
     typeList: state.typeList
   };
@@ -23,25 +22,31 @@ const mapDispatchToProps = (dispatch) => {
 };
 const Dashboard = React.createClass({
   componentWillMount() {
-    ApiClient.getTypeList(this.props.params.gameId, window.localStorage.getItem(constants.TOKEN_KEY), (err, res) => {
+    let gameId = this.props.params.gameId;
+    ApiClient.getTypeList(gameId, window.localStorage.getItem(constants.TOKEN_KEY), (err, res) => {
       if (err != null)
         return this.props.failureFetch();
-      return this.props.successFetch(res.data);
+      return this.props.successFetch({[gameId]: res.data});
     });
   },
   render() {
-    let typeList = this.props.typeList.map((item) => {
-      return (
-        <div>
-          <Link to={`/dashboard/${this.props.params.gameId}/${item}`} key={item}>{item}</Link>
-        </div>
-      );
-    });
+    let gameId = this.props.params.gameId;
+    let typeList = this.props.typeList;
+    let types = [];
+    if (gameId && (Object.keys(typeList).length > 0 && typeList[gameId])) {
+      types = typeList[gameId].map((item, idx, arr) => {
+        return (
+          <div key={idx}>
+            <Link to={`/dashboard/${this.props.params.gameId}/${item}`}>{item}</Link>
+          </div>
+        );
+      });
+    }
     return (
       <div>
-        {this.props.params.gameId}
+        {gameId}
         <div>
-          {typeList}
+          {types}
         </div>
       </div>
     );

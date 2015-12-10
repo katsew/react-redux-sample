@@ -81,6 +81,17 @@ class ApiClient {
         callback(null, parse(res.text));
       });
   }
+  getAnalytics(accessName, token, callback) {
+    httpClient
+      .get(`${API_ENDPOINT}/kpi/analytics`)
+      .set('x-access-token', token)
+      .set('x-access-name', accessName)
+      .end((err, res) => {
+        if (err != null)
+          return callback(err);
+        callback(null, parse(res.text));
+      });
+  }
 };
 
 module.exports = function () {

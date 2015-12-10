@@ -3,12 +3,16 @@ const routing = require('./routing.js');
 const auth = require('./auth.js');
 const gameList = require('./game-list.js');
 const typeList = require('./type-list.js');
+const analytics = require('./analytics.js');
+const statics = require('./statics-filter.js');
 
 const reducer = combineReducers({
   router: routing,
   auth: auth,
   gameList: gameList,
-  typeList: typeList
+  typeList: typeList,
+  analytics: analytics,
+  statics: statics
 });
 
 module.exports = reducer;
