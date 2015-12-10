@@ -30,13 +30,11 @@ const Header = React.createClass({
     e.preventDefault();
     ApiClient.logout((err, res) => {
       if (err != null) {
-        console.log(err);
         return this.props.failureLogout();
       }
       this.props.successLogout();
       window.localStorage.setItem(constants.TOKEN_KEY, "");
       window.localStorage.removeItem(constants.TOKEN_KEY);
-      console.log(window.localStorage.getItem(constants.TOKEN_KEY));
       history.pushState(null, "/");
     });
   },

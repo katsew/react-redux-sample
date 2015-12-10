@@ -9,7 +9,6 @@ const pushState = require('redux-router').pushState;
 const storage = window.localStorage;
 const Registration = React.createClass({
   onSubmit(e) {
-    console.log('--- submit email ---');
     e.preventDefault();
     let name = find(this.refs.registar_name).value;
     let mail = find(this.refs.registar_mail).value;
@@ -23,10 +22,8 @@ const Registration = React.createClass({
     };
     ApiClient.registar(data, (err, res) => {
       if (err != null) {
-        console.log('--- registar failed ---');
         return this.props.failureLogin();
       }
-      console.log('--- kpi registar and login ---');
       KpiClient.registar(res.data._id, res.token);
       storage.setItem("token", res.token);
       KpiClient.login(res.data.id, res.token);

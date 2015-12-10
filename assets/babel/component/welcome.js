@@ -26,17 +26,10 @@ const mapDispatchToProps = (dispatch) => {
 const Welcome = React.createClass({
   getOwner() {
     ApiClient.getOwner(window.localStorage.getItem(constants.TOKEN_KEY), (err, res) => {
-      console.log('--- verify GET request ---');
-      console.error(err);
-      console.log(res);
     });
   },
   componentWillMount() {
-    console.log('--- component will up ---');
     ApiClient.getGameList(window.localStorage.getItem(constants.TOKEN_KEY), (err, res) => {
-      console.log('--- verify GET request ---');
-      console.error(err);
-      console.log(res);
       if (err != null)
         return this.props.failureFetch();
       this.props.successFetch(res.gameList);

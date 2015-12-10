@@ -41,7 +41,6 @@ const Login = React.createClass({
     };
     ApiClient.login(data, (err, res) => {
       if (err != null) {
-        console.log(err);
         return this.props.failureLogin();
       }
       storage.setItem("token", res.token);
