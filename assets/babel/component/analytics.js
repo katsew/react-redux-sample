@@ -8,6 +8,8 @@ const staticsFilter = require('../action/statics-filter');
 const moment = require('moment');
 const _ = require('lodash');
 
+const BarChart = require('react-d3/barchart').BarChart;
+
 const mapStateToProps = (state) => {
   return {
     analytics: state.analytics,
@@ -18,27 +20,11 @@ const mapDispatchToProps = (dispatch) => {
   return {
     successFetch: (payload, data) => {
       dispatch(actionCreator.successFetch(payload));
-      dispatch(staticsFilter.showAll(data));
+      dispatch(staticsFilter.show(data));
     },
     failureFetch: () => {
       dispatch(actionCreator.failureFetch());
       dispatch(staticsFilter.forceReset());
-    },
-    showThisMonth: (payload) => {
-      dispatch(staticsFilter.showThisMonth(payload));
-    },
-    showRecent: (payload) => {
-      dispatch(staticsFilter.showRecent(payload));
-    },
-    orderBy: (order) => {
-      switch (order) {
-        case "ASC":
-          dispatch(staticsFilter.orderByOld());
-          break;
-        case "DESC":
-        default:
-          dispatch(staticsFilter.orderByNew());
-      }
     }
   }
 };
@@ -47,8 +33,13 @@ const Analytics = React.createClass({
     console.log('--- analytics component up ---');
     console.log(`${this.props.params.gameId}:${this.props.params.typeId}`);
     let token = window.localStorage.getItem(constants.TOKEN_KEY);
+    let recentDate = moment().add(-30, 'days').format('YYYY-MM-DD');
+    let today = moment().format('YYYY-MM-DD');
+    let accessDate = `${recentDate}:${today}`;
+    console.log('--- accessDate last 30 days ---');
+    console.log(accessDate);
     let accessName = `${this.props.params.gameId}:${this.props.params.typeId}`;
-    ApiClient.getAnalytics(accessName, token, (err, res) => {
+    ApiClient.getAnalytics(accessName, accessDate, token, (err, res) => {
       console.log('--- get analytics result ---');
       console.log(err, res);
       if (err != null)
@@ -62,42 +53,6 @@ const Analytics = React.createClass({
       this.props.successFetch(payload, res.data);
     });
   },
-  componentDidMount() {
-    console.log('--- component did mount ---');
-  },
-  componentWillReceiveProps(nextProps) {
-    console.log('--- component will receive props ---');
-    console.log(nextProps);
-  },
-  shouldComponentUpdate(nextProps, nextState) {
-    console.log('--- should component update ? ---');
-    console.log(this.props, this.state);
-    console.log(nextProps, nextState);
-    return _.isEqual(this.props.statics, nextProps.statics, (a, b) => {
-      return a !== b;
-    });
-  },
-  componentWillUpdate(nextProps, nextState) {
-    console.log('--- component will update ! ---');
-    console.log(nextProps, nextState);
-  },
-  componentDidUpdate(prevProps, prevState) {
-    console.log('--- component did update ---');
-    console.log(prevProps, prevState);
-  },
-  compoenntWillUnmount() {
-    console.log('--- component will unmount ---');
-  },
-  showRecent() {
-    let payload = this.getValidAnalytics();
-    if (_.isArray(payload))
-      this.props.showRecent(payload);
-  },
-  showThisMonth() {
-    let payload = this.getValidAnalytics();
-    if (_.isArray(payload))
-      this.props.showThisMonth(payload);
-  },
   getValidAnalytics() {
     console.log('--- get valid analytics ---');
     let analytics = this.props.analytics;
@@ -105,43 +60,74 @@ const Analytics = React.createClass({
     let typeId = this.props.params.typeId;
     console.log(analytics, gameId, typeId);
 
-    if ( gameId && typeId && (Object.keys(analytics).length > 0 && analytics[gameId] && analytics[gameId][typeId]) ) {
+    if ( gameId && typeId && (Object.keys(analytics).length > 0 && analytics[gameId]) && Object.keys(analytics[gameId][typeId]).length > 0 ) {
+      console.log('--- data is valid ! ---');
       return analytics[gameId][typeId];
     }
   },
-  orderByAsc() {
-    this.props.orderBy('ASC');
-  },
-  orderByDesc() {
-    this.props.orderBy('DESC');
-  },
   render() {
     console.log('--- render component ---');
+    let chartY = [];
     let chartX = [];
-    if (_.isArray(this.getValidAnalytics())) {
+    let barChart = [{
+      "name": "New Registration",
+      "values": []
+    }];
+    if (_.isObject(this.getValidAnalytics())) {
       console.log('--- is valid statics ---');
       console.log(this.props.statics);
-      chartX = _.map(this.props.statics, (item, idx, arr) => {
+      chartX = _.map(this.props.statics.x, (item, idx, arr) => {
         return (
-          <div key={idx}>
-            {item._id} : {moment(item.created).format('YYYY年M月D日(ddd)')}
-          </div>
+          <g key={idx}>
+            <text x={idx*20} y={10} fill="black" transform={`rotate(90, ${idx*20+6}, 6)`}>
+            {item}
+            </text>
+          </g>
         );
       });
+      chartY = _.map(this.props.statics.y, (item, idx, arr) => {
+        return (
+          <rect
+            key={idx}
+            fill="lightblue"
+            width="10"
+            height={item * 10}
+            y={400 - item * 10}
+            x={idx*20}
+          />
+        );
+      });
+      let staticsY = this.props.statics.y;
+      _.map(this.props.statics.x, (item, idx, arr) => {
+        barChart[0].values.push({
+          "x": item,
+          "y": staticsY[idx]
+        });
+      });
     }
+
     return (
-      <div>
-        {this.props.params.typeId}
-        <div>
-          <button onClick={this.showThisMonth}>SHOW THIS MONTH</button>
-          <button onClick={this.showRecent}>SHOW RECENT</button>
-        </div>
-        <div>
-          <button onClick={this.orderByAsc}>昇順(ASC)</button>
-          <button onClick={this.orderByDesc}>降順(DESC)</button>
-        </div>
-        <div>
-          {chartX}
+      <div className="section">
+        <div className="content">
+          {this.props.params.typeId}
+          <BarChart
+            data={barChart}
+            width={960}
+            height={480}
+            fill={'#3182bd'}
+            title={this.props.typeId}
+            yAxisLabel="Accesses"
+            xAxisLabel="Last 30 Days"
+            xAxisFormatter={(d) => {
+              let startOfMonth = moment(d).startOf('month').format('YYYY-MM-DD');
+              console.log(startOfMonth);
+              console.log(moment(d).isSame(startOfMonth, 'day'));
+              if (moment(d).isSame(startOfMonth, 'day'))
+                return moment(d).format('MM/DD')
+              return moment(d).format('DD');
+            }}
+            yAxisTickCount={6}
+          />
         </div>
       </div>
     );
@@ -152,3 +138,16 @@ module.exports = connect(
   mapStateToProps,
   mapDispatchToProps
 )(Analytics);
+
+// <div>
+//   <svg width="800" height="400" className="chart-y">
+//     <g>
+//       {chartY}
+//     </g>
+//   </svg>
+//   <svg width="800" height="100" className="chart-x">
+//     <g>
+//       {chartX}
+//     </g>
+//   </svg>
+// </div>

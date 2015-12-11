@@ -1,6 +1,12 @@
 const actionType = require('./action-type.js');
 
 module.exports = Object.freeze({
+  show: (payload) => {
+    return {
+      type: actionType.SHOW_ANYWAY,
+      payload: payload
+    };
+  },
   showAll: (payload) => {
     return {
       type: actionType.SHOW_ALL,

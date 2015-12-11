@@ -81,11 +81,12 @@ class ApiClient {
         callback(null, parse(res.text));
       });
   }
-  getAnalytics(accessName, token, callback) {
+  getAnalytics(accessName, accessDate, token, callback) {
     httpClient
       .get(`${API_ENDPOINT}/kpi/analytics`)
       .set('x-access-token', token)
       .set('x-access-name', accessName)
+      .set('x-access-date', accessDate)
       .end((err, res) => {
         if (err != null)
           return callback(err);

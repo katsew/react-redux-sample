@@ -1,10 +1,18 @@
 const actionType = require('../action/statics-filter/action-type.js');
 const _ = require('lodash');
 const moment = require('moment');
-const initialState = [];
+const initialState = {
+  x: [],
+  y: []
+};
 
 const staticFilter = (state = initialState, action) => {
   switch(action.type) {
+    case actionType.SHOW_ANYWAY: {
+      console.log(action.payload);
+      return action.payload;
+    }
+    break;
     case actionType.SHOW_ALL: {
       return _.sortBy(action.payload, (item, idx, arr) => {
         let time = moment(item.created).valueOf();
@@ -26,12 +34,12 @@ const staticFilter = (state = initialState, action) => {
     break;
     case actionType.SHOW_THIS_MONTH: {
       console.log('--- show this month filter ---');
-      let start = moment().startOf('month').format('YYYY-MM-DD');
-      let end = moment().endOf('month').format('YYYY-MM-DD');
-      console.log(start, end);
+      let startOf = moment().startOf('month').format('YYYY-MM-DD hh:mm:ss');
+      let endOf = moment().endOf('month').format('YYYY-MM-DD hh:mm:ss');
+      let start = moment(startOf).add(-12, 'hours').toDate();
+      let end = moment(endOf).add(12, 'hours').toDate();
       let data = _.filter(action.payload, (item) => {
-        let created = moment(item.created).format('YYYY-MM-DD');
-        return moment(created).isBetween(start, end);
+        return moment(item.created).isBetween(start, end);
       });
       return _.sortBy(data, (item, idx, arr) => {
         let time = moment(item.created).valueOf();

@@ -10,6 +10,10 @@ const Provider = require('react-redux').Provider;
 
 // require components
 const DebugComponent = require('./util/debug.js').DebugComponent;
+const DevTools = require('redux-devtools/lib/react').DevTools
+const DebugPanel = require('redux-devtools/lib/react').DebugPanel
+const LogMonitor = require('redux-devtools/lib/react').LogMonitor
+
 const Router = require('./router.js');
 
 // initial configuration
@@ -52,3 +56,7 @@ if (accessToken != null && accessToken !== "" && accessToken !== "null") {
     </div>
   ), document.getElementById('app'));
 }
+
+// <DebugPanel top right bottom>
+//   <DevTools store={store} monitor={LogMonitor} />
+// </DebugPanel>
