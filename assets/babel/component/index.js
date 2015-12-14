@@ -4,5 +4,6 @@ module.exports = {
   Registration: require('./registration.js'),
   Welcome: require('./welcome.js'),
   Dashboard: require('./dashboard.js'),
-  Analytics: require('./analytics.js')
+  Analytics: require('./analytics.js'),
+  AddNewGame: require('./add-new-game.js')
 };

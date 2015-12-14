@@ -6,6 +6,7 @@ const connect = require('react-redux').connect;
 const constants = require('../constant/');
 const GameList = require('./game-list');
 const actionCreator = require('../action/gamelist');
+const Link = require('react-router').Link;
 
 const mapStateToProps = (state) => {
   return {
@@ -24,9 +25,9 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 const Welcome = React.createClass({
-  getOwner() {
-    ApiClient.getOwner(window.localStorage.getItem(constants.TOKEN_KEY), (err, res) => {
-    });
+  addNewGame(e) {
+    e.preventDefault();
+    console.log('--- add new game ---');
   },
   componentWillMount() {
     ApiClient.getGameList(window.localStorage.getItem(constants.TOKEN_KEY), (err, res) => {
@@ -40,8 +41,9 @@ const Welcome = React.createClass({
       <div className="section">
         <div className="content">
           <h2>ようこそ！</h2>
-          <button className="button" onClick={this.getOwner}>GET Owner</button>
-
+          <div>
+            <Link to="add/new_game">+新規ゲーム追加</Link>
+          </div>
           <div className="game-list">
             <GameList />
           </div>

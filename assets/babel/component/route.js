@@ -12,6 +12,7 @@ const routes = (
     <Route path="welcome" component={AuthenticatedComponent(components.Welcome)} />
     <Route path="dashboard/:gameId" component={components.Dashboard}  />
     <Route path="dashboard/:gameId/:typeId" component={components.Analytics} />
+    <Route path="add/new_game" component={components.AddNewGame} />
   </Route>
 );
 
