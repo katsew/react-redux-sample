@@ -7,8 +7,15 @@ html(lang='ja')
     block title
       title Not yet be named.
     block style
+      script.
+        document.addEventListener('DOMContentLoaded', function() {
+          console.timeEnd("css");
+        });
+        console.time("css");
       link(rel='stylesheet', href='/assets/css/core.css')
-  body
+      link(rel='stylesheet', href='/assets/css/sp/welcome.css')
+  body.isSp
     block content
+    link(rel='stylesheet', href='/assets/css/sp.css')
     block script
       script(type='text/javascript', src='/assets/js/core.js')

@@ -1,0 +1,28 @@
+.anim-todo-enter
+  opacity 0
+  top 40px
+  height 0
+  &-active
+    opacity 1
+    top 0
+    height 26px
+
+
+.anim-todo-leave
+  opacity 1
+  top 0
+  height 26px
+  &-active
+    opacity 0
+    top -30px
+    height 0
+
+.anim-todo-enter
+  position relative
+  display block
+  transition 200ms ease-in all
+
+.anim-todo-leave
+  position relative
+  display block
+  transition 300ms ease-in all

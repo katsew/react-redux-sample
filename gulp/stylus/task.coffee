@@ -8,7 +8,7 @@ paths = require('../config').paths
 
 
 gulp.task 'stylus', () ->
-  return gulp.src ["#{paths.src.stylus}/**/!(_)*.styl"]
+  return gulp.src ["#{paths.src.stylus}/!(block|deps|element|reset|util)**/*.styl", "#{paths.src.stylus}/core.styl", "#{paths.src.stylus}/sp.styl"]
     .pipe stylus
       compress: true
     .pipe autoPrefixer({

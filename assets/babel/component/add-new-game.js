@@ -6,6 +6,10 @@ const pushState = require('redux-router').pushState;
 const actionCreator = require('../action/manipulate-type-list');
 const Tooltip = require('./enhance/tooltip.js');
 const TooltipContent = require('./content/add-new-type/tooltip-types.js');
+const ReactCSSTransitionGroup = require('react-addons-css-transition-group');
+
+const Calendar = require('./enhance/calendar.js');
+
 
 const mapStateToProps = (state) => {
   return {
@@ -42,12 +46,12 @@ const AddNewGame = React.createClass({
     let typeList = ['login', 'registration', 'payment', 'event'];
     let types = typeList.map((item, idx, arr) => {
       return (
-        <option key={`option_${item}_${idx}`}>{item}</option>
+        <option key={`option_${idx}`}>{item}</option>
       );
     });
     let manipulated = this.props.manipulateTypeList.map((item, idx, arr) => {
       return (
-        <div key={`manipulated_${item}_${idx}`}>
+        <div key={`manipulated_${idx}`}>
           <label><input type="text" disabled="disabled" value={item} /></label>
           <button onClick={this.removeType.bind(this, idx)}>[-] remove</button>
         </div>
@@ -56,12 +60,30 @@ const AddNewGame = React.createClass({
     return (
       <div className="section">
         <div className="content">
+          <Calendar
+            onSelectPrev={(idx) => {
+              console.log('--- select prev ---');
+            }}
+            onSelectNext={(idx) => {
+              console.log('--- select next ---');
+            }}
+            onSelectDay={(day) => {
+              console.log('--- select day ---');
+              console.log(day);
+            }}
+          />
           <label>
             <span>ゲームID</span>
             <input type="text" ref="game_id" />
           </label>
           <div>
-            {manipulated}
+            <ReactCSSTransitionGroup
+              transitionName="anim-todo"
+              transitionEnterTimeout={400}
+              transitionLeaveTimeout={300}
+            >
+              {manipulated}
+            </ReactCSSTransitionGroup>
           </div>
           <div style={{
             marginTop: 20 + 'px'
